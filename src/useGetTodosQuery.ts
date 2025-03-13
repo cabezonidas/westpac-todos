@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { fetcher } from "./fetcher";
-
-type TodosResponse = Awaited<ReturnType<typeof fetcher>>;
+import { useTodoCache } from "./useTodoCache";
 
 export const useGetTodosQuery = ({
   limit,
@@ -10,10 +9,7 @@ export const useGetTodosQuery = ({
   limit: number;
   skip: number;
 }) => {
-  const index = `${limit}-${skip}`;
-  const [cache, setCache] = useState<{
-    [key: string]: TodosResponse | undefined;
-  }>({});
+  const { hydrate, index, ...rest } = useTodoCache({ limit, skip });
   const queryState = useRef<{ [key: string]: { isLoading: boolean } }>({});
 
   useEffect(() => {
@@ -22,65 +18,13 @@ export const useGetTodosQuery = ({
       queryState.current[key] = { isLoading: true };
       // Do fetch
       fetcher({ limit, skip })
-        .then((response) => setCache((prev) => ({ ...prev, [key]: response })))
+        .then(hydrate)
         .finally(() => (queryState.current[key] = { isLoading: false }));
     }
-  }, [limit, skip, queryState]);
+  }, [limit, skip, hydrate]);
 
   return {
-    data: cache[index],
     isLoading: queryState.current?.[index]?.isLoading ?? true,
-    toggle: (id: number) =>
-      setCache((prev) => {
-        const state = prev[index];
-        if (state) {
-          return {
-            ...prev,
-            [index]: {
-              ...state,
-              todos: state.todos.map((t) =>
-                t.id === id ? { ...t, completed: !t.completed } : t
-              ),
-            },
-          };
-        }
-        return prev;
-      }),
-    add: (value: string) =>
-      setCache((prev) => {
-        const state = prev[index];
-        if (state) {
-          return {
-            ...prev,
-            [index]: {
-              ...state,
-              todos: [
-                {
-                  todo: value,
-                  id: new Date().getTime(),
-                  completed: false,
-                  userId: 0,
-                },
-                ...state.todos,
-              ],
-            },
-          };
-        }
-        return prev;
-      }),
-    remove: (id: number) =>
-      setCache((prev) => {
-        const state = prev[index];
-        if (state) {
-          return {
-            ...prev,
-            [index]: {
-              ...state,
-              todos: state.todos.filter((t) => t.id !== id),
-            },
-          };
-        }
-        return prev;
-      }),
+    ...rest,
   };
 };
