@@ -68,5 +68,19 @@ export const useGetTodosQuery = ({
         }
         return prev;
       }),
+    remove: (id: number) =>
+      setCache((prev) => {
+        const state = prev[index];
+        if (state) {
+          return {
+            ...prev,
+            [index]: {
+              ...state,
+              todos: state.todos.filter((t) => t.id !== id),
+            },
+          };
+        }
+        return prev;
+      }),
   };
 };

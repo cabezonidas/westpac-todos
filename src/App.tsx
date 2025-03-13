@@ -9,14 +9,20 @@ function App() {
   const [skip] = useState(0);
   const [limit] = useState(10);
 
-  const { data, isLoading, toggle, add } = useGetTodosQuery({ skip, limit });
+  const { data, isLoading, toggle, add, remove } = useGetTodosQuery({
+    skip,
+    limit,
+  });
 
   return (
-    <>
-      <header>
-        <h1>Westpac Todo</h1>
-        <div>By Seb</div>
-      </header>
+    <div className="App">
+      <div>
+        <header>
+          <h1>Westpac Todo</h1>
+          <div>By Seb</div>
+        </header>
+        <AddTaskForm onAdded={add} />
+      </div>
       <div className="App-TodoGrid">
         {isLoading && (
           <a href="https://react.dev" target="_blank">
@@ -25,18 +31,18 @@ function App() {
         )}
         {data && (
           <>
-            <AddTaskForm onAdded={add} />
             {data?.todos.map((todo) => (
               <Todo
                 key={todo.id}
                 todo={todo}
                 onToggle={() => toggle(todo.id)}
+                onDelete={() => remove(todo.id)}
               />
             ))}
           </>
         )}
       </div>
-    </>
+    </div>
   );
 }
 

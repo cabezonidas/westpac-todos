@@ -26,7 +26,7 @@ export const Todo = ({
       <label htmlFor={id} title={todo.todo}>
         {todo.todo}
       </label>
-      <button data-delete disabled type="button" onClick={onDelete}>
+      <button data-delete type="button" onClick={onDelete}>
         Delete
       </button>
     </fieldset>

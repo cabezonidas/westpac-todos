@@ -19,3 +19,7 @@
 .Todo input:checked + label {
   text-decoration: line-through;
 }
+
+button[data-delete] {
+  background-color: rgb(222, 0, 0);
+}
