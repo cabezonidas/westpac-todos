@@ -30,5 +30,21 @@ export const useGetTodosQuery = ({
   return {
     data: cache[index],
     isLoading: queryState.current?.[index]?.isLoading ?? true,
+    toggle: (id: number) =>
+      setCache((prev) => {
+        const state = prev[index];
+        if (state) {
+          return {
+            ...prev,
+            [index]: {
+              ...state,
+              todos: state.todos.map((t) =>
+                t.id === id ? { ...t, completed: !t.completed } : t
+              ),
+            },
+          };
+        }
+        return prev;
+      }),
   };
 };

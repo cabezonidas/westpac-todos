@@ -17,13 +17,15 @@ export const Todo = ({
   const id = `${todo.id}`;
   return (
     <fieldset className="Todo">
-      <label htmlFor={id}>{todo.todo}</label>
       <input
         id={id}
         type="checkbox"
         checked={todo.completed}
         onChange={onToggle}
       />
+      <label htmlFor={id} title={todo.todo}>
+        {todo.todo}
+      </label>
       <button data-delete disabled type="button" onClick={onDelete}>
         Delete
       </button>

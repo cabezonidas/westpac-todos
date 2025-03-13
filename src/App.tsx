@@ -8,7 +8,7 @@ function App() {
   const [skip] = useState(0);
   const [limit] = useState(10);
 
-  const { data, isLoading } = useGetTodosQuery({ skip, limit });
+  const { data, isLoading, toggle } = useGetTodosQuery({ skip, limit });
 
   return (
     <>
@@ -23,7 +23,7 @@ function App() {
           </a>
         )}
         {data?.todos.map((todo) => (
-          <Todo todo={todo} onToggle={() => {}} />
+          <Todo key={todo.id} todo={todo} onToggle={() => toggle(todo.id)} />
         ))}
       </div>
     </>
