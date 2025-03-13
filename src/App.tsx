@@ -4,15 +4,18 @@ import "./App.css";
 import { useGetTodosQuery } from "./useGetTodosQuery";
 import { Todo } from "./Todo";
 import { AddTaskForm } from "./AddTaskForm";
+import { useSyncedState } from "./useSyncedState";
 
 function App() {
-  const [skip] = useState(0);
+  const [skip, setSkip] = useSyncedState("page", 0);
   const [limit] = useState(10);
 
   const { data, isLoading, toggle, add, remove } = useGetTodosQuery({
     skip,
     limit,
   });
+
+  const canLoadMore = data ? (skip + 1) * limit < data.total : false;
 
   return (
     <div className="App">
@@ -21,7 +24,23 @@ function App() {
           <h1>Westpac Todo</h1>
           <div>By Seb</div>
         </header>
-        <AddTaskForm onAdded={add} />
+        <div className="App-Add_Pagination">
+          <AddTaskForm onAdded={add} />
+          <div className="Pagination">
+            <button
+              type="button"
+              onClick={() => setSkip((prev) => Math.max(prev - 1, 0))}
+            >
+              Prev
+            </button>
+            <button
+              type="button"
+              onClick={() => canLoadMore && setSkip((prev) => prev + 1)}
+            >
+              Next
+            </button>
+          </div>
+        </div>
       </div>
       <div className="App-TodoGrid">
         {isLoading && !data && (

@@ -53,3 +53,13 @@ header {
 .App-TodoGrid > :not(:last-child) {
   margin-bottom: 12px;
 }
+
+.App-Add_Pagination {
+  display: flex;
+  justify-content: space-between;
+}
+
+.App-Add_Pagination .Pagination {
+  display: flex;
+  column-gap: 8px;
+}
