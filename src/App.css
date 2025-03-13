@@ -28,15 +28,22 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
+  .logo {
     animation: logo-spin infinite 20s linear;
   }
 }
 
-.card {
-  padding: 2em;
+header {
+  margin-bottom: 24px;
 }
 
-.read-the-docs {
-  color: #888;
+.App-TodoGrid {
+  display: grid;
+  overflow: auto;
+  height: 600px;
+  max-height: 600px;
+  row-gap: 12px;
+}
+
+.App-TodoGrid img {
 }

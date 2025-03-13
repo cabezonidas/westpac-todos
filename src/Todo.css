@@ -1,0 +1,17 @@
+.Todo {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  max-width: 100%;
+  overflow: hidden;
+  column-gap: 12px;
+  align-items: center;
+  border: none;
+  padding: 0;
+}
+
+.Todo label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+}
