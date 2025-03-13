@@ -24,7 +24,7 @@ function App() {
         <AddTaskForm onAdded={add} />
       </div>
       <div className="App-TodoGrid">
-        {isLoading && (
+        {isLoading && !data && (
           <a href="https://react.dev" target="_blank">
             <img src={reactLogo} className="logo react" alt="React logo" />
           </a>

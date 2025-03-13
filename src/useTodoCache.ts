@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { fetcher } from "./fetcher";
+import { useSyncedState } from "./useSyncedState";
 
 type TodosResponse = Awaited<ReturnType<typeof fetcher>>;
 
@@ -18,9 +19,9 @@ export const useTodoCache = ({
   skip: number;
 }) => {
   const index = `${limit}-${skip}`;
-  const [cache, setCache] = useState<{
+  const [cache, setCache] = useSyncedState<{
     [key: string]: TodosResponse | undefined;
-  }>({});
+  }>("todo", {});
 
   const setters = useMemo(() => {
     const hydrate = (response: TodosResponse) =>

@@ -12,16 +12,17 @@ export const useGetTodosQuery = ({
   const { hydrate, index, ...rest } = useTodoCache({ limit, skip });
   const queryState = useRef<{ [key: string]: { isLoading: boolean } }>({});
 
+  const data = rest.data;
   useEffect(() => {
     const key = `${limit}-${skip}`;
-    if (!queryState.current[key]?.isLoading) {
+    if (!queryState.current[key]?.isLoading && !data) {
       queryState.current[key] = { isLoading: true };
       // Do fetch
       fetcher({ limit, skip })
         .then(hydrate)
         .finally(() => (queryState.current[key] = { isLoading: false }));
     }
-  }, [limit, skip, hydrate]);
+  }, [limit, skip, hydrate, data]);
 
   return {
     isLoading: queryState.current?.[index]?.isLoading ?? true,
