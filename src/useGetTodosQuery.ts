@@ -46,5 +46,27 @@ export const useGetTodosQuery = ({
         }
         return prev;
       }),
+    add: (value: string) =>
+      setCache((prev) => {
+        const state = prev[index];
+        if (state) {
+          return {
+            ...prev,
+            [index]: {
+              ...state,
+              todos: [
+                {
+                  todo: value,
+                  id: new Date().getTime(),
+                  completed: false,
+                  userId: 0,
+                },
+                ...state.todos,
+              ],
+            },
+          };
+        }
+        return prev;
+      }),
   };
 };
